@@ -92,8 +92,7 @@ public class Pricer extends JFrame {
 	public ArrayList<String> loadProductList(){
 		ArrayList<String> ProductList = new ArrayList<String>();
 //		Collections.addAll(ProductList, "American Option","European Option","Asian Option");
-		ProductList = ProductAlgorithmManager.getInstance().getProductList();
-		
+		ProductList = ProductAlgorithmManager.getInstance().getProductList();	
 		return ProductList;
 	}
 	
