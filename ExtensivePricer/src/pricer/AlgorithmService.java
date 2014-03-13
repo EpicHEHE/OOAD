@@ -1,9 +1,11 @@
+package pricer;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
-import spi.Algorithm;
+import pricer.spi.Algorithm;
 
 public class AlgorithmService {
 	private static AlgorithmService service;
@@ -26,15 +28,15 @@ public class AlgorithmService {
 			Iterator<Algorithm> algorithms = loader.iterator();
 			while (algorithms.hasNext()) {
 				Algorithm a = algorithms.next();
-				System.out.println(a.algorithmName);
+				System.out.println("new Algorithms" + a.getAlgorithmName());
 				algorithmArrayList.add(a);
-
 			}
 		} catch (ServiceConfigurationError serviceError) {
 			algorithmArrayList = null;
 			serviceError.printStackTrace();
+
 		}
-		
+
 		return algorithmArrayList;
 	}
 

@@ -1,8 +1,15 @@
+package pricer;
 import java.util.Map;
 
-import spi.Algorithm;
+import pricer.spi.Algorithm;
+
 
 public class BinomialTree implements Algorithm {
+	public String algorithmName;
+	
+	public BinomialTree(){
+		algorithmName = "binomialTree";
+	}
 
 	@Override
 	public Map<String, Float> getParameterMap() {
@@ -20,6 +27,12 @@ public class BinomialTree implements Algorithm {
 	public Float[] calculate() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getAlgorithmName() {
+		// TODO Auto-generated method stub
+		return algorithmName;
 	}
 
 }

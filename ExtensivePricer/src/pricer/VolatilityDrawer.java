@@ -1,3 +1,4 @@
+package pricer;
 public class VolatilityDrawer {
 	private String numofTrial;
 

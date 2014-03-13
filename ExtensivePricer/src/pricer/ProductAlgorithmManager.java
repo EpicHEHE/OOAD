@@ -1,7 +1,9 @@
+package pricer;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
-import spi.Algorithm;
+import pricer.spi.Algorithm;
+
 
 public class ProductAlgorithmManager {
 	private TreeMap<String, TreeMap<String, Algorithm>> productMap;
