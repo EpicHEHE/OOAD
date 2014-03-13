@@ -3,15 +3,16 @@ package pricer.spi;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public interface Algorithm {
 	
 	// public String algorithmName="";
-	Map<String, Float> parameter = new HashMap<String, Float>();
+	TreeMap<String, Float> parameter = new TreeMap<String, Float>();
 
-	Map<String, Float> getParameterMap();
+	public TreeMap<String, Float> getParameterMap();
 
-	public void setParameter(Map<String, Float> a);
+	public void setParameter(TreeMap<String, Float> a);
 	public String getAlgorithmName();
 	public ArrayList<String> getProductName();
 
