@@ -1,4 +1,5 @@
 package pricer;
+import java.util.ArrayList;
 import java.util.Map;
 
 import pricer.spi.Algorithm;
@@ -6,9 +7,11 @@ import pricer.spi.Algorithm;
 
 public class BinomialTree implements Algorithm {
 	public String algorithmName;
+	private ArrayList<String> productName;
 	
 	public BinomialTree(){
 		algorithmName = "binomialTree";
+		productName.add("AmericanOption");
 	}
 
 	@Override
@@ -33,6 +36,11 @@ public class BinomialTree implements Algorithm {
 	public String getAlgorithmName() {
 		// TODO Auto-generated method stub
 		return algorithmName;
+	}
+
+	@Override
+	public ArrayList<String> getProductName() {
+		return productName;
 	}
 
 }
