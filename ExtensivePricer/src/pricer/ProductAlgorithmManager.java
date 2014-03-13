@@ -37,7 +37,18 @@ public class ProductAlgorithmManager {
 		}
 		return algorithmList;
 	}
-
+	
+	public ArrayList<String> getParameterList(String productName, String algorithmName) {
+		TreeMap<String, Float> parameterMap =productMap.get(productName).get(algorithmName).getParameterMap();
+		ArrayList<String> parameterList=new ArrayList<String>();
+		for(String parameterName: parameterMap.keySet()){
+			parameterList.add(parameterName);
+		}
+		
+		
+		return parameterList;
+	}
+	
 	public void addProducttoMap(String productName) {
 		productMap.put(productName, new TreeMap<String, Algorithm>());
 		notifyProductChange();
