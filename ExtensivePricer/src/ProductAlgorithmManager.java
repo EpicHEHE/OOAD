@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.TreeMap;
 
+import spi.Algorithm;
+
 public class ProductAlgorithmManager {
 	private TreeMap<String, TreeMap<String, Algorithm>> productMap;
 	private static ProductAlgorithmManager manager;
@@ -10,7 +12,7 @@ public class ProductAlgorithmManager {
 	}
 
 	public static synchronized ProductAlgorithmManager getInstance() {
-		if(manager ==null){
+		if (manager == null) {
 			manager = new ProductAlgorithmManager();
 		}
 		return manager;

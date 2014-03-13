@@ -3,6 +3,8 @@ import java.util.Iterator;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 
+import spi.Algorithm;
+
 public class AlgorithmService {
 	private static AlgorithmService service;
 	private ServiceLoader<Algorithm> loader;
@@ -23,13 +25,16 @@ public class AlgorithmService {
 		try {
 			Iterator<Algorithm> algorithms = loader.iterator();
 			while (algorithms.hasNext()) {
-				algorithmArrayList.add(algorithms.next());
+				Algorithm a = algorithms.next();
+				System.out.println(a.algorithmName);
+				algorithmArrayList.add(a);
 
 			}
 		} catch (ServiceConfigurationError serviceError) {
 			algorithmArrayList = null;
 			serviceError.printStackTrace();
 		}
+		
 		return algorithmArrayList;
 	}
 

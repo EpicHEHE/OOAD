@@ -1,5 +1,7 @@
 import java.util.Map;
 
+import spi.Algorithm;
+
 public class BinomialTree implements Algorithm {
 
 	@Override
