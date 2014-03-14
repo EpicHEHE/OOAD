@@ -1,5 +1,10 @@
 package pricer;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ServiceConfigurationError;
@@ -12,7 +17,7 @@ public class AlgorithmService {
 	private ServiceLoader<Algorithm> loader;
 
 	private AlgorithmService() {
-		loader = ServiceLoader.load(Algorithm.class);
+		
 	}
 
 	public static synchronized AlgorithmService getInstance() {
@@ -24,9 +29,27 @@ public class AlgorithmService {
 
 	public ArrayList<Algorithm> loadAlgorithms() {
 		ArrayList<Algorithm> algorithmArrayList = new ArrayList<Algorithm>();
+		
+		//URLClassLoader sysLoader;
+		String filePath = "C:\\Dictionary\\BinomialTree";
+		System.out.println("1");
+		URL[] urls = new URL[1];
+		try {
+			urls[0]=new URL("file:\\"+filePath);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//        for (int i = 0; i < flist.length; i++)
+//            urls[i] = flist[i].toURI().toURL();
+		System.out.println("urls:"+urls[0].toString());
+        URLClassLoader ucl = new URLClassLoader(urls);
+        loader = ServiceLoader.load(Algorithm.class, ucl);
+
 		try {
 			Iterator<Algorithm> algorithms = loader.iterator();
 			while (algorithms.hasNext()) {
+				
 				Algorithm a = algorithms.next();
 				System.out.println("new Algorithms" + a.getAlgorithmName());
 				algorithmArrayList.add(a);

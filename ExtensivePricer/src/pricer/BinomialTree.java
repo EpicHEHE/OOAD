@@ -8,7 +8,7 @@ import pricer.spi.Algorithm;
 
 public class BinomialTree implements Algorithm {
 	public String algorithmName;
-	private ArrayList<String> productName;
+	private ArrayList<String> productName=new ArrayList<String>();
 	
 	public BinomialTree(){
 		algorithmName = "binomialTree";

@@ -34,6 +34,9 @@ public class Pricer extends JFrame {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		
+		AlgorithmService.getInstance().loadAlgorithms();
+		System.out.println(System.getProperty("java.class.path"));
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
