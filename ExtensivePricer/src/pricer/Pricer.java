@@ -9,6 +9,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import java.awt.Choice;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JTextField;
 
 import pricer.spi.Algorithm;
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
+import javax.swing.JButton;
 
 public class Pricer extends JFrame {
 	
@@ -30,6 +34,8 @@ public class Pricer extends JFrame {
 */	Choice choiceProduct = new Choice();
 	Choice choiceAlgorithm = new Choice();
 	JPanel panelCalculator = new JPanel();
+    JLabel labelPut = new JLabel();
+	JLabel labelCall = new JLabel();
 
 
 	public static void main(String[] args) {
@@ -92,23 +98,62 @@ public class Pricer extends JFrame {
 		
 		choiceAlgorithm.setBounds(130, 50, 150, 20);
 		panelCalculator.add(choiceAlgorithm);
-		
+				
 		ArrayList<String> parameterList = new ArrayList<String>();
 		parameterList = loadParameter(choiceProduct.getSelectedItem(), choiceAlgorithm.getSelectedItem());
-
+		TreeMap<String, Double> parameterInputMap = new TreeMap<String, Double>();
+		
 		for (int j=0;j<parameterList.size();j++){
 			JLabel label = new JLabel(parameterList.get(j));
 			label.setBounds(30, 80+30*j, 100, 20);
 			panelCalculator.add(label);
 			
-			
 			JTextField textFieldName = new JTextField();
 			textFieldName.setBounds(130, 80+30*j, 150, 20);
 			panelCalculator.add(textFieldName);
 			textFieldName.setColumns(10);
+			textFieldName.getInputContext();
 			
+//			parameterInputMap.put(parameterList.get(j), textFieldName.getInputContext());
 
 		}
+		
+		JButton calculateButton = new JButton("Calculate");
+		calculateButton.setBounds(150, 80+30*parameterList.size(), 100, 25);
+		panelCalculator.add(calculateButton);
+		//the label to show the price for put and call option price
+		JLabel put = new JLabel("Put");
+		JLabel call = new JLabel("Call");
+		put.setBounds(400, 20, 100, 20);
+		call.setBounds(500, 20, 100, 20);
+		panelCalculator.add(put);
+		panelCalculator.add(call);
+			
+		labelPut.setBounds(400, 50, 100, 20);
+		labelCall.setBounds(500, 50, 100, 20);
+		panelCalculator.add(labelPut);
+		panelCalculator.add(labelCall);
+
+		calculateButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae){
+				double[] priceArray = new double[2];
+				priceArray = calculatePrice();
+				labelPut.setText(String.valueOf(priceArray[0]));
+				labelCall.setText(String.valueOf(priceArray[1]));
+			}
+		});
+
+	}
+	
+	public double[] calculatePrice(){
+		double [] priceArray = new double[2];
+		priceArray[0] = 1.0;
+		priceArray[1] = 2.0;
+//		String productName = choiceProduct.getSelectedItem();
+//		String algorithmName = choiceAlgorithm.getSelectedItem();
+		
+//		priceArray = ProductAlgorithmManager.getInstance().getAlgorithmSelected(productName, algorithmName).calculate();
+		return priceArray;
 	}
 	
 	public ArrayList<String> loadProductList(){
@@ -127,7 +172,6 @@ public class Pricer extends JFrame {
 	}
 	
 	public ArrayList<String> loadParameter(String productName, String algorithmName){
-		//TreeMap<String,Algorithm> parameter = null;
 		ArrayList<String> parameterList = new ArrayList<String>();
 //		parameterList =	ProductAlgorithmManager.getInstance().getParameterList(productName, algorithmName);
 		Collections.addAll(parameterList, "sNaught Price","Strike Price","Interest Rate", "Term", "Volatility");
