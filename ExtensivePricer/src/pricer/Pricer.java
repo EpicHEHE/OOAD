@@ -210,7 +210,11 @@ public class Pricer extends JFrame {
 		JButton volatilityButton = new JButton("Show Volatility Smile");
 		volatilityButton.setBounds(400, 80+30*parameterList.size(), 200, 25);
 		panelCalculator.add(volatilityButton);
-
+		volatilityButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent ae1){
+				volatilityCalculate();
+			}
+		});
 	}
 	
 	public double[] calculatePrice(){
@@ -260,5 +264,9 @@ public class Pricer extends JFrame {
 				choiceProduct.add(ProductList.get(i));	
 
 			}
-}
+	}
+	
+	public float[][] volatilityCalculate(){
+		return null;
+	}
 }
