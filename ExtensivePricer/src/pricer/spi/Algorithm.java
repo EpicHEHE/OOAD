@@ -8,14 +8,14 @@ import java.util.TreeMap;
 public interface Algorithm {
 	
 	// public String algorithmName="";
-	TreeMap<String, Float> parameter = new TreeMap<String, Float>();
+	TreeMap<String, Double> parameter = new TreeMap<String, Double>();
 
-	public TreeMap<String, Float> getParameterMap();
+	public TreeMap<String, Double> getParameterMap();
 
-	public void setParameter(TreeMap<String, Float> a);
+	public void setParameter(TreeMap<String, Double> a);
 	public String getAlgorithmName();
 	public ArrayList<String> getProductName();
 
-	Float[] calculate();
+	double[] calculate();
 
 }
