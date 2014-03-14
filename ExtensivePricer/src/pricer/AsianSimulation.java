@@ -10,44 +10,40 @@ import pricer.spi.Algorithm;
 public class AsianSimulation implements Algorithm {
 	public String algorithmName;
 	private ArrayList<String> productName;
-	TreeMap<String, Float> parameter = new TreeMap<String, Float>();
+	TreeMap<String, Double> parameter = new TreeMap<String, Double>();
+	
 
-	public AsianSimulation(){
+	public AsianSimulation() {
 		algorithmName = "AsianSimulation";
 		productName.add("AsianOption");
-		parameter.put("sNaught", (float) 0);
-		parameter.put("strike", (float) 0);
-		parameter.put("volatility", (float) 0);
-		parameter.put("riskFreeRate", (float) 0);
-		parameter.put("term", (float) 0);
-		//parameter.put("side", (float) 0);
-		parameter.put("numTimeIntervals", (float) 0);
-		parameter.put("numTrials", (float) 0);
-		
-		}
-	
+		parameter.put("sNaught", 0.0);
+		parameter.put("strike", 0.0);
+		parameter.put("volatility", 0.0);
+		parameter.put("riskFreeRate", 0.0);
+		parameter.put("term", 0.0);
+		// parameter.put("side", (float) 0);
+		parameter.put("numTimeIntervals", 0.0);
+		parameter.put("numTrials", 0.0);
+
+	}
+
 	@Override
 	public String getAlgorithmName() {
-		// TODO Auto-generated method stub
 		return algorithmName;
 	}
-	
+
 	@Override
-	public TreeMap<String, Float> getParameterMap() {
-		// TODO Auto-generated method stub
+	public TreeMap<String, Double> getParameterMap() {
 		return parameter;
 	}
 
-	
-
 	@Override
 	public ArrayList<String> getProductName() {
-		// TODO Auto-generated method stub
 		return productName;
 	}
 
 	@Override
-	public Float[] calculate() {
+	public double[] calculate() {
 		double sNaught = parameter.get("sNaught");
 		double strike = parameter.get("strike");
 		double volatility = parameter.get("volatility");
@@ -55,43 +51,48 @@ public class AsianSimulation implements Algorithm {
 		double term = parameter.get("term");
 		double numTimeIntervals = parameter.get("numTimeIntervals");
 		double numTrials = parameter.get("numTrials");
-		boolean side = true;
-		
+
 		int i, trialCount;
-		double deltaT = term/(double)numTimeIntervals;
-		double trialRunningSum, trialAverage, trialPayoff;
-		double simulationRunningSum, simulationAveragePayoff;
+		double deltaT = term / (double) numTimeIntervals;
+		double trialRunningSum, trialAverage, trialCallPrice, trialPutPrice;
+		double simulationSumCallPrice, simulationSumPutPrice, simulationAverageCallPrice, simulationAveragePutPrice;
 		double s;
+		double[] result = new double[2];
 		Random rand = new Random();
-		simulationRunningSum = 0.0;
+		simulationSumCallPrice = 0.0;
+		simulationSumPutPrice = 0.0;
 		for (trialCount = 1; trialCount <= numTrials; trialCount++) {
 			s = sNaught;
 			trialRunningSum = 0.0;
 			double nns = 0;
 			for (i = 0; i < numTimeIntervals; i++) {
 				nns = rand.nextGaussian();
-				s = s*Math.exp((riskFreeRate-volatility*volatility/2)*deltaT + 
-					volatility*nns*Math.sqrt(deltaT));
+				s = s
+						* Math.exp((riskFreeRate - volatility * volatility / 2)
+								* deltaT + volatility * nns * Math.sqrt(deltaT));
 				trialRunningSum += s;
 
 			}
-			trialAverage = trialRunningSum/numTimeIntervals;
-			if (side == true)	// call option
-				trialPayoff = Math.max(trialAverage - strike, 0.0);
-			else				// put option
-				trialPayoff = Math.max(strike - trialAverage,  0.0);
-			simulationRunningSum += trialPayoff;			
+			trialAverage = trialRunningSum / numTimeIntervals;
+			// if (side == true) // call option
+			trialCallPrice = Math.max(trialAverage - strike, 0.0);
+			// else // put option
+			trialPutPrice = Math.max(strike - trialAverage, 0.0);
+			simulationSumCallPrice += trialCallPrice;
+			simulationSumPutPrice += trialPutPrice;
 		}
-		simulationAveragePayoff = simulationRunningSum / numTrials;
-		double valueOfOption;
-		valueOfOption = simulationAveragePayoff * Math.exp(-riskFreeRate*term);
-		return null;
+		simulationAverageCallPrice = simulationSumCallPrice / numTrials;
+		simulationAveragePutPrice = simulationSumPutPrice / numTrials;
+
+		
+		result[0] = simulationAverageCallPrice * Math.exp(-riskFreeRate * term);
+		result[1] = simulationAveragePutPrice * Math.exp(-riskFreeRate * term);
+		return result;
 	}
 
 	@Override
-	public void setParameter(TreeMap<String, Float> a) {
-		// TODO Auto-generated method stub
-
+	public void setParameter(TreeMap<String, Double> a) {
+		parameter=a;
 	}
 
 }
