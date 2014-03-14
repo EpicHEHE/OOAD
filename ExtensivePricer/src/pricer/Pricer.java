@@ -249,7 +249,7 @@ public class Pricer extends JFrame {
 	public ArrayList<String> loadParameter(String productName, String algorithmName){
 		ArrayList<String> parameterList = new ArrayList<String>();
 		parameterList =	ProductAlgorithmManager.getInstance().getParameterList(productName, algorithmName);
-//		Collections.addAll(parameterList, "sNaught Price","Strike Price","Interest Rate", "Term", "Volatility");
+		Collections.addAll(parameterList, "sNaught Price","Strike Price","Interest Rate", "Term", "Volatility");
 		return parameterList;
 	}
 	
