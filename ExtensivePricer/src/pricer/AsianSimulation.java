@@ -9,7 +9,7 @@ import pricer.spi.Algorithm;
 
 public class AsianSimulation implements Algorithm {
 	public String algorithmName;
-	private ArrayList<String> productName;
+	private ArrayList<String> productName=new ArrayList<String>();
 	TreeMap<String, Double> parameter = new TreeMap<String, Double>();
 	
 
@@ -21,7 +21,6 @@ public class AsianSimulation implements Algorithm {
 		parameter.put("volatility", 0.0);
 		parameter.put("riskFreeRate", 0.0);
 		parameter.put("term", 0.0);
-		// parameter.put("side", (float) 0);
 		parameter.put("numTimeIntervals", 0.0);
 		parameter.put("numTrials", 0.0);
 
