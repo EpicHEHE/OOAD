@@ -16,19 +16,19 @@ public class BinomialTree implements Algorithm {
 	}
 
 	@Override
-	public TreeMap<String, Float> getParameterMap() {
+	public TreeMap<String, Double> getParameterMap() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void setParameter(TreeMap<String, Float> a) {
+	public void setParameter(TreeMap<String, Double> a) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public Float[] calculate() {
+	public double[] calculate() {
 		// TODO Auto-generated method stub
 		return null;
 	}
