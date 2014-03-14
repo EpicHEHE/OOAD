@@ -7,12 +7,18 @@ import pricer.spi.Algorithm;
 
 public class ProductAlgorithmManager {
 	private TreeMap<String, TreeMap<String, Algorithm>> productMap;
+	private TreeMap<String, Algorithm> algorithmMap;
 	private static ProductAlgorithmManager manager;
-
+	
+	
 	private ProductAlgorithmManager() {
 		productMap = new TreeMap<String, TreeMap<String, Algorithm>>();
+		algorithmMap = new TreeMap<String, Algorithm>();
+		Algorithm AsianSimulation = new AsianSimulation();
+		algorithmMap.put("AsianSimulation", AsianSimulation);
+		productMap.put("AsianOption", algorithmMap);
 	}
-
+	
 	public static synchronized ProductAlgorithmManager getInstance() {
 		if (manager == null) {
 			manager = new ProductAlgorithmManager();

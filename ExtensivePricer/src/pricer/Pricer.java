@@ -185,23 +185,23 @@ public class Pricer extends JFrame {
 	
 	public ArrayList<String> loadProductList(){
 		ArrayList<String> ProductList = new ArrayList<String>();
-		Collections.addAll(ProductList, "American Option","European Option","Asian Option");
-//		ProductList = ProductAlgorithmManager.getInstance().getProductList();	
+		//		Collections.addAll(ProductList, "American Option","European Option","Asian Option");
+		ProductList = ProductAlgorithmManager.getInstance().getProductList();	
 		return ProductList;
 	}
 	
 	public ArrayList<String> loadAlgorithmList(){
 		ArrayList<String> Algorithmlist = new ArrayList<String>();
-//		String product = choiceProduct.getSelectedItem();
-//		Algorithmlist = ProductAlgorithmManager.getInstance().getAlgorithmList(product);
+		String product = choiceProduct.getSelectedItem();
+		Algorithmlist = ProductAlgorithmManager.getInstance().getAlgorithmList(product);
 		
 		return Algorithmlist;
 	}
 	
 	public ArrayList<String> loadParameter(String productName, String algorithmName){
 		ArrayList<String> parameterList = new ArrayList<String>();
-//		parameterList =	ProductAlgorithmManager.getInstance().getParameterList(productName, algorithmName);
-		Collections.addAll(parameterList, "sNaught Price","Strike Price","Interest Rate", "Term", "Volatility");
+		parameterList =	ProductAlgorithmManager.getInstance().getParameterList(productName, algorithmName);
+//		Collections.addAll(parameterList, "sNaught Price","Strike Price","Interest Rate", "Term", "Volatility");
 		return parameterList;
 	}
 }
