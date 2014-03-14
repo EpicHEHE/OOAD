@@ -9,16 +9,16 @@ public class ProductAlgorithmManager {
 	private TreeMap<String, TreeMap<String, Algorithm>> productMap;
 	private TreeMap<String, Algorithm> algorithmMap;
 	private static ProductAlgorithmManager manager;
-	
-	
+
 	private ProductAlgorithmManager() {
 		productMap = new TreeMap<String, TreeMap<String, Algorithm>>();
 		algorithmMap = new TreeMap<String, Algorithm>();
 		Algorithm AsianSimulation = new AsianSimulation();
-		algorithmMap.put("AsianSimulation", AsianSimulation);
-		productMap.put("AsianOption", algorithmMap);
+
+		// algorithmMap.put("AsianSimulation", AsianSimulation);
+		productMap.put("AsianOption", new TreeMap<String, Algorithm>());
 	}
-	
+
 	public static synchronized ProductAlgorithmManager getInstance() {
 		if (manager == null) {
 			manager = new ProductAlgorithmManager();
@@ -38,41 +38,53 @@ public class ProductAlgorithmManager {
 	public ArrayList<String> getAlgorithmList(String productName) {
 		ArrayList<String> algorithmList = new ArrayList<String>();
 		TreeMap<String, Algorithm> algorithmMap = productMap.get(productName);
-		for (String keyName : algorithmMap.keySet()) {
-			algorithmList.add(keyName);
+		if (algorithmMap != null) {
+			for (String keyName : algorithmMap.keySet()) {
+				algorithmList.add(keyName);
+			}
 		}
 		return algorithmList;
 	}
-	
-	public Algorithm getAlgorithmSelected(String productName, String algorithmName) {
-		Algorithm algorithm = productMap.get(productName).get(algorithmName);		
+
+	public Algorithm getAlgorithmSelected(String productName,
+			String algorithmName) {
+		Algorithm algorithm = productMap.get(productName).get(algorithmName);
 		return algorithm;
 	}
-	
-	public ArrayList<String> getParameterList(String productName, String algorithmName) {
-		TreeMap<String, Double> parameterMap =getAlgorithmSelected(productName, algorithmName).getParameterMap();
-		ArrayList<String> parameterList=new ArrayList<String>();
-		for(String parameterName: parameterMap.keySet()){
+
+	public ArrayList<String> getParameterList(String productName,
+			String algorithmName) {
+		TreeMap<String, Double> parameterMap = getAlgorithmSelected(
+				productName, algorithmName).getParameterMap();
+		ArrayList<String> parameterList = new ArrayList<String>();
+		for (String parameterName : parameterMap.keySet()) {
 			parameterList.add(parameterName);
 		}
 		return parameterList;
 	}
-	
+
 	public void addProducttoMap(String productName) {
 		productMap.put(productName, new TreeMap<String, Algorithm>());
-		notifyProductChange();
+		//notifyProductChange();
 	}
 
-	public void addAlgorithmtoMap(ArrayList<Algorithm> newAlgorithms) {
+	public boolean addAlgorithmtoMap(ArrayList<Algorithm> newAlgorithms) {
+		boolean status=false;
+		System.out.println(newAlgorithms.size());
 		for (int i = 0; i < newAlgorithms.size(); i++) {
-			ArrayList<String> productName = newAlgorithms.get(i).getProductName();
-			for (int k = 0; i < productName.size(); i++) {
-				productMap.get(productName.get(k)).put(
-						newAlgorithms.get(i).getAlgorithmName(),
-						newAlgorithms.get(i));
+			ArrayList<String> productName = newAlgorithms.get(i)
+					.getProductName();
+			for (int k = 0; k < productName.size(); k++) {
+				if (!productMap.containsKey(productName.get(k))) {
+					addProducttoMap(productName.get(k));
+					status = true;
+				}
+				productMap.get(productName.get(k)).put(newAlgorithms.get(i).getAlgorithmName(),newAlgorithms.get(i));
+				status = true;
 			}
 		}
-		notifyAlgorithmChange();
+		//notifyAlgorithmChange();
+		return status;
 	}
 
 	public void dropProduct(String productName) {
@@ -92,10 +104,10 @@ public class ProductAlgorithmManager {
 	}
 
 	public void notifyAlgorithmChange() {
-
+		// Pricer.getInstance().AlgorithmList();
 	}
 
 	public void notifyProductChange() {
-
+		Pricer.getInstance().ProductListRefresh();
 	}
 }

@@ -13,6 +13,8 @@ import javax.swing.JLabel;
 import java.awt.Choice;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JTextField;
 
@@ -28,6 +30,7 @@ import javax.swing.SwingConstants;
 public class Pricer extends JFrame {
 	
 	private JPanel contentPane;
+	private static Pricer pricer;
 	
 	Choice choiceProduct = new Choice();
 	Choice choiceAlgorithm = new Choice();
@@ -39,6 +42,8 @@ public class Pricer extends JFrame {
 	TreeMap<String, Double> parameterInputMap = new TreeMap<String, Double>();
 
 
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -56,8 +61,16 @@ public class Pricer extends JFrame {
 		});
 	}
 	
-	public Pricer() {
+	private Pricer() {
 		displayGUI();
+	}
+	
+	public static synchronized Pricer getInstance(){
+		 
+			if (pricer == null) {
+				pricer = new Pricer();
+			}
+			return pricer;
 	}
 	
 	public void displayGUI(){
@@ -89,7 +102,19 @@ public class Pricer extends JFrame {
 				    if(returnVal == JFileChooser.APPROVE_OPTION) {
 				       System.out.println("You chose to open this file: " +
 				    		   chooser.getSelectedFile().getName());
-				       AlgorithmService.getInstance().loadAlgorithms(chooser.getSelectedFile());
+				       ArrayList<Algorithm> algorithmList =AlgorithmService.getInstance().loadAlgorithms(chooser.getSelectedFile());
+				       boolean status = ProductAlgorithmManager.getInstance().addAlgorithmtoMap(algorithmList);
+				       if(status){
+				    	   ProductListRefresh();
+				       }
+				       
+				       //choiceProduct.removeAll();
+//				       ArrayList<String> ProductList = loadProductList();
+//				       for (int i = 0; i < ProductList.size(); i++){
+//							choiceProduct.add(ProductList.get(i));	
+//
+//						}
+				 
 				    }
 			}
 		});
@@ -105,20 +130,39 @@ public class Pricer extends JFrame {
 		for (int i = 0; i < ProductList.size(); i++){
 			choiceProduct.add(ProductList.get(i));	
 		}
-		
-		JLabel labelAlgorithm = new JLabel("Algorithm");
+/*		choiceProduct.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent arg0) {
+				System.out.println("selected product "+choiceProduct.getSelectedItem());
+				ArrayList<String> AlgorithmList = loadAlgorithmList();
+				System.out.println("AlgorithmList: "+AlgorithmList.toString());
+				choiceAlgorithm.removeAll();
+				for (int i = 0; i < AlgorithmList.size(); i++){
+					choiceAlgorithm.add(AlgorithmList.get(i));	
+				}
+				
+			}
+		});
+*/		JLabel labelAlgorithm = new JLabel("Algorithm");
 		labelAlgorithm.setBounds(30, 50, 100, 20);
 		panelCalculator.add(labelAlgorithm);
-		ArrayList<String> AlgorithmList = loadAlgorithmList();
-		for (int i = 0; i < AlgorithmList.size(); i++){
-			choiceProduct.add(AlgorithmList.get(i));	
+		if(choiceProduct.getSelectedItem()!=null){
+			ArrayList<String> AlgorithmList = loadAlgorithmList();
+			for (int i = 0; i < AlgorithmList.size(); i++){
+				choiceAlgorithm.add(AlgorithmList.get(i));	
+			}
+			choiceAlgorithm.setBounds(130, 50, 150, 20);
+			panelCalculator.add(choiceAlgorithm);
 		}
 		
-		choiceAlgorithm.setBounds(130, 50, 150, 20);
-		panelCalculator.add(choiceAlgorithm);
+		
+		
 				
 		ArrayList<String> parameterList = new ArrayList<String>();
-		parameterList = loadParameter(choiceProduct.getSelectedItem(), choiceAlgorithm.getSelectedItem());
+		if(choiceAlgorithm.getSelectedItem()!=null){
+			parameterList = loadParameter(choiceProduct.getSelectedItem(), choiceAlgorithm.getSelectedItem());
+		}
+		
 		
 		for (int j = 0; j < parameterList.size(); j++){
 			JLabel label = new JLabel(parameterList.get(j));
@@ -152,10 +196,14 @@ public class Pricer extends JFrame {
 
 		calculateButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent ae){
-				double[] priceArray = new double[2];
-				priceArray = calculatePrice();
-				labelPut.setText(String.valueOf(priceArray[0]));
-				labelCall.setText(String.valueOf(priceArray[1]));
+				choiceProduct.removeAll();
+//				panelCalculator.validate();
+//				panelCalculator.repaint();
+				choiceProduct.add("adfadf");
+//				double[] priceArray = new double[2];
+//				priceArray = calculatePrice();
+//				labelPut.setText(String.valueOf(priceArray[0]));
+//				labelCall.setText(String.valueOf(priceArray[1]));
 			}
 		});
 		
@@ -204,4 +252,13 @@ public class Pricer extends JFrame {
 //		Collections.addAll(parameterList, "sNaught Price","Strike Price","Interest Rate", "Term", "Volatility");
 		return parameterList;
 	}
+	
+	public void ProductListRefresh(){
+		 choiceProduct.removeAll();
+	       ArrayList<String> ProductList = loadProductList();
+	       for (int i = 0; i < ProductList.size(); i++){
+				choiceProduct.add(ProductList.get(i));	
+
+			}
+}
 }
