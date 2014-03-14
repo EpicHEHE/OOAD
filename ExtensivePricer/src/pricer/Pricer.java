@@ -3,9 +3,11 @@ package pricer;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import java.awt.Choice;
@@ -21,6 +23,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 import javax.swing.JButton;
+import javax.swing.SwingConstants;
 
 public class Pricer extends JFrame {
 	
@@ -41,7 +44,7 @@ public class Pricer extends JFrame {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		AlgorithmService.getInstance().loadAlgorithms();
+		
 		System.out.println(System.getProperty("java.class.path"));
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -76,6 +79,24 @@ public class Pricer extends JFrame {
 
 		JPanel panelExtension = new JPanel();
 		tabbedPane.addTab("Extension", null, panelExtension, null);
+		
+		JButton addJARButton = new JButton("add JAR");
+		addJARButton.setHorizontalAlignment(SwingConstants.RIGHT);
+		addJARButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				 JFileChooser chooser = new JFileChooser();
+				    FileNameExtensionFilter filter = new FileNameExtensionFilter(
+				        "jar", "jar");
+				    chooser.setFileFilter(filter);
+				    int returnVal = chooser.showOpenDialog(Pricer.this);
+				    if(returnVal == JFileChooser.APPROVE_OPTION) {
+				       System.out.println("You chose to open this file: " +
+				    		   chooser.getSelectedFile().getName());
+				       AlgorithmService.getInstance().loadAlgorithms(chooser.getSelectedFile());
+				    }
+			}
+		});
+		panelExtension.add(addJARButton);
 		
 		JLabel labelType = new JLabel("Type");
 		labelType.setBounds(30, 20, 100, 20);

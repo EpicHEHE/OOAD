@@ -1,5 +1,6 @@
 package pricer;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -27,21 +28,18 @@ public class AlgorithmService {
 		return service;
 	}
 
-	public ArrayList<Algorithm> loadAlgorithms() {
+	public ArrayList<Algorithm> loadAlgorithms(File file) {
 		ArrayList<Algorithm> algorithmArrayList = new ArrayList<Algorithm>();
 		
-		//URLClassLoader sysLoader;
-		String filePath = "C:\\Dictionary\\BinomialTree";
 		System.out.println("1");
 		URL[] urls = new URL[1];
 		try {
-			urls[0]=new URL("file:\\"+filePath);
+			urls[0]=file.toURI().toURL();
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//        for (int i = 0; i < flist.length; i++)
-//            urls[i] = flist[i].toURI().toURL();
+
 		System.out.println("urls:"+urls[0].toString());
         URLClassLoader ucl = new URLClassLoader(urls);
         loader = ServiceLoader.load(Algorithm.class, ucl);
